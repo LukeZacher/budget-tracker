@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Budget Tracker</title>
+    <link rel="stylesheet" href="../static/style.css" />
+  </head>
+  <body>
+    <h1>My Budget Trakcer</h1>
+    <h2>Add transaction</h2>
+    <form method="POST" action="/add_transaction">
+      <div>
+        <label>Amount:</label>
+        <input type="number" step="0.01" name="amount" required />
+      </div>
+      <div>
+        <label>Description:</label>
+        <input type="text" name="description" required />
+      </div>
+      <div>
+        <label>Type:</label>
+        <select name="type" required>
+          <option value="income">Income</option>
+          <option value="expense">Expense</option>
+        </select>
+      </div>
+      <button type="submit">Add Transaction</button>
+    </form>
+
+    <h2>Transactions</h2>
+    <h4>Net money: {{ balance }}</h4>
+    <ul>
+      {% for transaction in transaction_list|reverse %}
+      <li>
+        <span
+          class="{% if transaction.type == 'expense' %}expense{% else %}income{% endif %}"
+        >
+          {{ transaction.date.strftime('%Y-%m-%d %H:%M') }} - {{
+          transaction.description }}: {% if transaction.is_expense %}-{% endif
+          %}{{ transaction.display_amount }}
+        </span>
+      </li>
+      {% endfor %}
+    </ul>
+  </body>
+</html>
